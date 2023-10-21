@@ -1,6 +1,7 @@
 ### reflow
 
-====
+---
+
 Cleans up your remote repository
 
 [![Build](https://img.shields.io/github/actions/workflow/status/kilip/reflow/ci.yml?event=push&style=flat-square)](https://github.com/kilip/reflow/actions/workflows/ci.yml)
