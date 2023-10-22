@@ -7,11 +7,11 @@ import Layout from '@/pkg/ui/components/Layout'
 
 const Dashboard = () => {
   return (
-    <Layout>
+    <GitHubProvider>
       <SearchProvider>
         <Search/>
       </SearchProvider>
-    </Layout>
+    </GitHubProvider>
   )
 }
 
