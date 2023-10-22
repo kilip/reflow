@@ -9,7 +9,7 @@ export default async function search(req: NextRequest){
   try{
     const response = await octokit.search.repos(params)
     return NextResponse.json(response)
-  }catch(e){
+  }catch(e: any){
     return NextResponse.json({error: e}, {
       status: e.status,
     })
