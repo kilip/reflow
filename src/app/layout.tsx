@@ -4,6 +4,7 @@ import './globals.css'
 import Layout from '@/pkg/ui/components/Layout'
 import AuthProvider from '@/pkg/auth/context/AuthContext'
 import classNames from 'classnames'
+import ReactQueryProvider from '@/pkg/ui/contexts/ReactQueryContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,14 +20,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body 
+      <body
         className={classNames({
           'bg-gray-200 min-h-screen': true
         })}
       >
         <Layout>
           <AuthProvider>
-            {children}
+            <ReactQueryProvider>
+              {children}
+            </ReactQueryProvider>
           </AuthProvider>
         </Layout>
       </body>
