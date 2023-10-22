@@ -1,6 +1,6 @@
 import { createMocks } from 'node-mocks-http'
 import { describe, it, expect, vi } from 'vitest'
-import { useOctokit } from './octokit'
+import { createOctokit } from './octokit'
 import { NextApiRequest } from 'next'
 import { Octokit } from '@octokit/rest'
 
@@ -16,7 +16,7 @@ describe('useOctokit', () => {
       url: 'http://test.com'
     })
 
-    const octokit = await useOctokit(req)
+    const octokit = await createOctokit(req)
 
     expect(jwt.getToken).toHaveBeenCalledOnce()
     expect(octokit).toBeInstanceOf(Octokit)
