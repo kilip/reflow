@@ -1,6 +1,4 @@
-import { NextApiRequest } from 'next'
 import { createOctokit } from '../octokit'
-import { GitHubSearchParams } from '../types'
 import { NextRequest, NextResponse } from 'next/server'
 
 export default async function search(req: NextRequest){

@@ -3,7 +3,7 @@ import { PropsWithChildren, createContext, useContext, useState } from 'react';
 import { GitHubSearchContextProps, GitHubSearchItems, GitHubSearchParams } from '../types';
 import { useGitHubContext } from './GitHubContext';
 
-const SearchContext = createContext<GitHubSearchContextProps>(undefined)
+const SearchContext = createContext<GitHubSearchContextProps|undefined>(undefined)
 
 export default function SearchProvider({children}: PropsWithChildren) {
   const { profile } = useGitHubContext()

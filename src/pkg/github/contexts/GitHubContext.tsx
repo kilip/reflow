@@ -5,7 +5,7 @@ import { GitHubContextProps, GitHubSearchParams, GitHubUser } from '../types'
 import { useSession } from 'next-auth/react'
 import Loading from '@/pkg/ui/components/Loading'
 
-const GitHubContext = createContext<GitHubContextProps>(undefined)
+const GitHubContext = createContext<GitHubContextProps|undefined>(undefined)
 
 export default function GitHubProvider({children}:PropsWithChildren<Record<string,unknown>>) {
   const { data: session, status} = useSession()
