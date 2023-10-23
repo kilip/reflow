@@ -6,7 +6,7 @@ import { useGitHubContext } from './GitHubContext';
 const SearchContext = createContext<GitHubSearchContextProps|undefined>(undefined)
 
 export default function SearchProvider({children}: PropsWithChildren) {
-  const test = window.localStorage.getItem('gitHubSearchContext')
+  const test = typeof localStorage !== 'undefined' ? localStorage.getItem('gitHubSearchContext'):undefined
   let existing = undefined
   if(test){
     existing = JSON.parse(test)
@@ -19,7 +19,7 @@ export default function SearchProvider({children}: PropsWithChildren) {
   const [per_page, setPerPage] = useState(existing ? existing.per_page : 6)
   const [page, setPage] = useState(existing ? existing.page : 1)
   const [keyword, setKeyword] = useState(existing ? existing.keyword : '')
-  const [owner, setOwner] = useState(existing ? existing.owner : 'user:'+profile.login)
+  const [owner, setOwner] = useState(existing ? existing.owner : 'user:'+profile?.login)
   const [total, setTotal] = useState(0)
   const [repositories, setRepositories] = useState<GitHubSearchItems>([])
   const [initialized, setInitialized] = useState(false)
@@ -44,14 +44,16 @@ export default function SearchProvider({children}: PropsWithChildren) {
   }
 
   useEffect(() => {
-    window.localStorage.setItem('gitHubSearchContext', JSON.stringify({
-      keyword,
-      owner,
-      sort,
-      order,
-      per_page,
-      page
-    }))
+    if(typeof localStorage !== 'undefined'){
+      localStorage.setItem('gitHubSearchContext', JSON.stringify({
+        keyword,
+        owner,
+        sort,
+        order,
+        per_page,
+        page
+      }))
+    }
   }, [keyword, owner,sort,order, per_page,page])
 
   return (

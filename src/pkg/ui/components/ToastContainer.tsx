@@ -10,7 +10,7 @@ function ToastElement({toast}: {toast: Toast}) {
 
   useEffect(() => {
     if(!timerId){
-      const id = window.setTimeout(() => {
+      const id = setTimeout(() => {
         remove(toast)
       }, 5000, toast)
       setTimerId(id)
