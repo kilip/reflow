@@ -1,23 +1,38 @@
 'use client'
-import { PropsWithChildren, createContext, useContext, useState } from 'react';
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react';
 import { GitHubSearchContextProps, GitHubSearchItems, GitHubSearchParams } from '../types';
 import { useGitHubContext } from './GitHubContext';
 
 const SearchContext = createContext<GitHubSearchContextProps|undefined>(undefined)
 
 export default function SearchProvider({children}: PropsWithChildren) {
+  const test = window.localStorage.getItem('gitHubSearchContext')
+  let existing = undefined
+  if(test){
+    existing = JSON.parse(test)
+  }
+
   const { profile } = useGitHubContext()
-  const [q, setQ] = useState('user:'+profile.login)
-  const [sort, setSort] = useState('name')
-  const [order, setOrder] = useState('asc')
-  const [per_page, setPerPage] = useState(10)
-  const [page, setPage] = useState(1)
+
+  const [sort, setSort] = useState(existing? existing.sort : 'name')
+  const [order, setOrder] = useState(existing ? existing.order : 'asc')
+  const [per_page, setPerPage] = useState(existing ? existing.per_page : 6)
+  const [page, setPage] = useState(existing ? existing.page : 1)
+  const [keyword, setKeyword] = useState(existing ? existing.keyword : '')
+  const [owner, setOwner] = useState(existing ? existing.owner : 'user:'+profile.login)
   const [total, setTotal] = useState(0)
   const [repositories, setRepositories] = useState<GitHubSearchItems>([])
+  const [initialized, setInitialized] = useState(false)
+
 
   const getSearchParams = (): GitHubSearchParams => {
+    const keywords = []
+    if(keyword != ''){
+      keywords.push(keyword)
+    }
+    keywords.push(owner)
     const params =  {
-      q,
+      q: keywords.join(' '),
       per_page,
       page
     }
@@ -27,15 +42,25 @@ export default function SearchProvider({children}: PropsWithChildren) {
 
     return params
   }
+
+  useEffect(() => {
+    window.localStorage.setItem('gitHubSearchContext', JSON.stringify({
+      keyword,
+      owner,
+      sort,
+      order,
+      per_page,
+      page
+    }))
+  }, [keyword, owner,sort,order, per_page,page])
+
   return (
     <SearchContext.Provider
       value={{
-        q,
         sort,
         order,
         per_page,
         page,
-        setQ,
         setSort,
         setOrder,
         setPerPage,
@@ -44,7 +69,13 @@ export default function SearchProvider({children}: PropsWithChildren) {
         total,
         setTotal,
         repositories,
-        setRepositories
+        setRepositories,
+        initialized,
+        setInitialized,
+        keyword,
+        setKeyword,
+        owner,
+        setOwner
       }}
     >
       {children}
