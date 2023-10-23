@@ -5,7 +5,7 @@ import Login from '../components/Login'
 export default async function LoginPage() {
   UI.layout = ThemeLayout.full
   return (
-    <div className='flex h-screen items-center justify-center'>
+    <div className='flex w-full h-screen items-center justify-center'>
       <Login/>
     </div>
   )
