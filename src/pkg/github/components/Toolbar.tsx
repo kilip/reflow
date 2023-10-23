@@ -41,21 +41,24 @@ export default function Toolbar({loading}: Props) {
   }
 
   return (
-    <div className='flex p-2 bg-white rounded-md drop-shadow-md space-x-5 items-center'>
-      <div className='form-control'>
-        <div className='input-group'>
-          <input
-            type='search'
-            className='input input-xs input-bordered'
-            onChange={handleKeyWordChange}
-            onKeyDown={handleKeyDown}
-            placeholder='type to search'
-          />
-          <button className='btn btn-square btn-xs' onClick={search}>
-            <MdSearch className='w-4 h-4'/>
-          </button>
+    <div className='flex flex-col p-2 bg-white rounded-md drop-shadow-md gap-2'>
+      <div className='flex items-center justify-start'>
+        <div className='form-control'>
+          <div className='input-group'>
+            <input
+              type='search'
+              className='input input-sm input-bordered'
+              onChange={handleKeyWordChange}
+              onKeyDown={handleKeyDown}
+              placeholder='type to search'
+            />
+            <button className='btn btn-square btn-sm' onClick={search}>
+              <MdSearch className='w-4 h-4'/>
+            </button>
+          </div>
         </div>
       </div>
+
       <Pagination currentPage={page} total={total} onPageChanged={onPageChanged} perPage={per_page} loading={loading}/>
     </div>
   )

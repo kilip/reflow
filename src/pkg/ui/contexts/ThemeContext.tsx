@@ -32,15 +32,9 @@ export default function ThemeProvider({children}: PropsWithChildren) {
       setLoading
     }}>
       <Layout>
-        <ToastProvider>
-          <AuthProvider>
-            <ReactQueryProvider>
-              <LoadingOverlay loading={loading}/>
-              {children}
-            </ReactQueryProvider>
-          </AuthProvider>
-        </ToastProvider>
+        {children}
       </Layout>
+      <LoadingOverlay loading={loading}/>
     </ThemeContext.Provider>
   )
 }
