@@ -11,14 +11,15 @@ export type GitHubContextProps = {
 }
 
 export type GitHubSearchContextProps = {
-  q: string
   sort?: string
   order?: string
   per_page: number
   page: number
   total: number
   repositories: GitHubSearchItems
-  setQ: (q: string) => void
+  initialized: boolean
+  keyword: string
+  owner: string
   setSort: (sort: any) => void
   setOrder: (order: any) => void
   setPerPage: (perPage: number) => void
@@ -26,6 +27,18 @@ export type GitHubSearchContextProps = {
   setTotal: (total: number) => void
   setRepositories: (items: GitHubSearchItems) => void
   getSearchParams: () => GitHubSearchParams
+  setInitialized: (initialized: boolean) => void
+  setKeyword: (keyword: string) => void
+  setOwner: (owner:string) => void
 }
 
-export type GitHubRepo = GitHubSearchItems['at']
+export type GitHubGetRepoParams = Endpoints['GET /repos/{owner}/{repo}']['parameters']
+export type GitHubGetRepoResponse = Endpoints['GET /repos/{owner}/{repo}']['response']
+export type GitHubRepo = GitHubGetRepoResponse['data']
+
+export type GitHubDeleteRepoResponse = Endpoints['DELETE /repos/{owner}/{repo}']['response']
+
+export type GitHubPatchRepoEndpoints = Endpoints['PATCH /repos/{owner}/{repo}']
+export type GitHubPatchRepoParams = GitHubPatchRepoEndpoints['parameters']
+export type GitHubPatchRepoResponse = GitHubPatchRepoEndpoints['response']
+

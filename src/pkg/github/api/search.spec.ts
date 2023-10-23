@@ -1,9 +1,7 @@
 import { createMocks } from 'node-mocks-http'
 import { describe, it, expect, vi } from 'vitest'
-import nock from 'nock'
 import search from './search'
-import exp from 'constants'
-import { GitHubSearchParams, GitHubSearchResponse } from '../types'
+import { GitHubSearchParams } from '../types'
 import { NextResponse } from 'next/server'
 import fetchMock from 'fetch-mock'
 

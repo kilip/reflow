@@ -1,19 +1,25 @@
 'use client'
 
-import { PropsWithChildren, createContext, useContext, useState } from 'react'
-import { GitHubContextProps, GitHubSearchParams, GitHubUser } from '../types'
+import { PropsWithChildren, createContext, useContext, useEffect } from 'react'
+import { GitHubContextProps, GitHubUser } from '../types'
 import { useSession } from 'next-auth/react'
+import { useThemeContext } from '@/pkg/ui/contexts/ThemeContext'
 import Loading from '@/pkg/ui/components/Loading'
 
 const GitHubContext = createContext<GitHubContextProps|undefined>(undefined)
 
 export default function GitHubProvider({children}:PropsWithChildren<Record<string,unknown>>) {
+  const { setLoading } = useThemeContext()
   const { data: session, status} = useSession()
   const profile = session?.profile as GitHubUser
 
-  if(status == 'loading'){
-    return (<Loading/>)
-  }
+  useEffect(() => {
+    if(status=='loading'){
+      setLoading(true)
+    }else{
+      setLoading(false)
+    }
+  }, [status, setLoading])
 
   return (
     <GitHubContext.Provider
