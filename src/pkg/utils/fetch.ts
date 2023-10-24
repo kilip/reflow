@@ -1,5 +1,3 @@
-const BASE_URL = process.env.NEXTAUTH_ORIGIN || 'http://localhost:3000'
-
 export interface FetchError {
   message: string
   status: number
@@ -7,11 +5,9 @@ export interface FetchError {
 }
 
 export async function api<T>(url: string, init?: RequestInit): Promise<T> {
-  const fullUrl = new URL(`${BASE_URL}${url}`)
-  const resp = await fetch(fullUrl, init)
+  const resp = await fetch(url, init)
   const text = await resp.text()
   const json = await JSON.parse(text)
-
   if (resp.ok) {
     return json as T
   }

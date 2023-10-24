@@ -1,8 +1,8 @@
-import { createMocks, createRequest } from 'node-mocks-http'
+import { createMocks } from 'node-mocks-http'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import search from './search'
 import { GitHubSearchParams } from '../types'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import fetchMock from 'fetch-mock'
 
 describe('GET /api/github/repo', () => {
