@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .pagination > button {
+    @apply btn btn-xs;
+  }
+
+  .pagination > button.nav {
+    @apply bg-slate-950 text-white;
+  }
+
+  .pagination > button.number {
+    @apply btn-outline;
+  }
+
+  .pagination > button > svg {
+    @apply w-4 h-4;
+  }
+}

@@ -1,6 +1,6 @@
-import Dashboard from '@/pkg/github/components/Dashboard'
+import GitHubDashboard from '@/pkg/github/pages/DashboardPage'
 
 export default function DashboardPage() {
-  return <Dashboard/>
+  return GitHubDashboard()
 }
 

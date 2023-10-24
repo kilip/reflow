@@ -1,8 +1,10 @@
+import { GitHubSearchProvider } from '../context/SearchContext';
+import Search from '../views/Search';
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   return (
-    <div>
-      <h1>GitHub Dashboard</h1>
-    </div>
+    <GitHubSearchProvider>
+      <Search/>
+    </GitHubSearchProvider>
   )
 }

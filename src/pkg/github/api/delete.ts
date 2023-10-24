@@ -1,7 +1,7 @@
 import { createOctokit } from '../octokit';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function deleteRepo(req: NextRequest){
+export default async function deleteRepo(req: NextRequest){
   try{
     const octokit = await createOctokit(req)
     const params = await req.json()

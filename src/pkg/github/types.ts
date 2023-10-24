@@ -1,44 +1,58 @@
 import { Endpoints } from '@octokit/types'
+import { components as OctokitComponents } from '@octokit/openapi-types'
 
 export type GitHubUser = Endpoints['GET /user']['response']['data']
 
-export type GitHubSearchParams = Endpoints['GET /search/repositories']['parameters']
 export type GitHubSearchResponse = Endpoints['GET /search/repositories']['response']
 export type GitHubSearchItems = GitHubSearchResponse['data']['items']
+export type GitHubSearchItem = OctokitComponents['schemas']['repo-search-result-item']
 
-export type GitHubContextProps = {
-  profile: GitHubUser,
+export enum GitHubEnumSortOrder {
+  asc = 'asc',
+  desc = 'desc'
+}
+
+export enum GitHubEnumVisibility {
+  undefined = 'undefined',
+  public = 'is:public',
+  private = 'is:private'
+}
+
+export enum GitHubEnumArchived {
+  undefined = 'undefined',
+  true = 'archived:true',
+  false = 'archived:false'
+}
+
+export type GitHubSortType = "stars" | "forks" | "help-wanted-issues" | "updated" | undefined
+
+export type GitHubSearchParams = {
+  keyword: string
+  owner: string
+  sort: GitHubSortType
+  order: GitHubEnumSortOrder
+  page: number
+  per_page: number
+  visibility: GitHubEnumVisibility
+  archived: GitHubEnumArchived
 }
 
 export type GitHubSearchContextProps = {
-  sort?: string
-  order?: string
-  per_page: number
-  page: number
   total: number
-  repositories: GitHubSearchItems
-  initialized: boolean
-  keyword: string
-  owner: string
-  setSort: (sort: any) => void
-  setOrder: (order: any) => void
-  setPerPage: (perPage: number) => void
-  setPage: (page: number) => void
-  setTotal: (total: number) => void
-  setRepositories: (items: GitHubSearchItems) => void
-  getSearchParams: () => GitHubSearchParams
-  setInitialized: (initialized: boolean) => void
-  setKeyword: (keyword: string) => void
-  setOwner: (owner:string) => void
-}
+  queryParams: GitHubSearchParams
+  setKeyword: (newVal: string) => void
+  setOwner: (newVal: string) => void
+  setSort: (newVal: string) => void
+  setOrder: (newVal: GitHubEnumSortOrder) => void
+  setPerPage: (newVal: number) => void
+  setPage: (newVal: number) => void
+  setVisibility: (newVal: GitHubEnumVisibility) => void
+  setArchived: (newVal: GitHubEnumArchived) => void
+  setTotal: (newVal: number) => void
+} &GitHubSearchParams
 
-export type GitHubGetRepoParams = Endpoints['GET /repos/{owner}/{repo}']['parameters']
-export type GitHubGetRepoResponse = Endpoints['GET /repos/{owner}/{repo}']['response']
-export type GitHubRepo = GitHubGetRepoResponse['data']
 
 export type GitHubDeleteRepoResponse = Endpoints['DELETE /repos/{owner}/{repo}']['response']
 
-export type GitHubPatchRepoEndpoints = Endpoints['PATCH /repos/{owner}/{repo}']
-export type GitHubPatchRepoParams = GitHubPatchRepoEndpoints['parameters']
-export type GitHubPatchRepoResponse = GitHubPatchRepoEndpoints['response']
-
+export type GitHubPatchRepoParams = Endpoints['PATCH /repos/{owner}/{repo}']['parameters']
+export type GitHubPatchResponse = Endpoints['PATCH /repos/{owner}/{repo}']['response']
