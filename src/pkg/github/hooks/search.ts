@@ -18,7 +18,6 @@ export default function useSearchRepos() {
           method: 'GET',
         }
       )
-
       return response
     },
   })

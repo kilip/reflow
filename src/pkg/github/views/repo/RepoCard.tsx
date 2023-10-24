@@ -57,7 +57,6 @@ export default function RepoCard({ repo }: Props) {
           queryKey: [GitHub.search.queryKey],
         })
       } catch (e: any) {
-        console.log(e.message)
         error(e.message)
       }
       setLoading(false)
