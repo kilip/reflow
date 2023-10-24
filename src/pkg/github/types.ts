@@ -3,28 +3,35 @@ import { components as OctokitComponents } from '@octokit/openapi-types'
 
 export type GitHubUser = Endpoints['GET /user']['response']['data']
 
-export type GitHubSearchResponse = Endpoints['GET /search/repositories']['response']
+export type GitHubSearchResponse =
+  Endpoints['GET /search/repositories']['response']
 export type GitHubSearchItems = GitHubSearchResponse['data']['items']
-export type GitHubSearchItem = OctokitComponents['schemas']['repo-search-result-item']
+export type GitHubSearchItem =
+  OctokitComponents['schemas']['repo-search-result-item']
 
 export enum GitHubEnumSortOrder {
   asc = 'asc',
-  desc = 'desc'
+  desc = 'desc',
 }
 
 export enum GitHubEnumVisibility {
   undefined = 'undefined',
   public = 'is:public',
-  private = 'is:private'
+  private = 'is:private',
 }
 
 export enum GitHubEnumArchived {
   undefined = 'undefined',
   true = 'archived:true',
-  false = 'archived:false'
+  false = 'archived:false',
 }
 
-export type GitHubSortType = "stars" | "forks" | "help-wanted-issues" | "updated" | undefined
+export type GitHubSortType =
+  | 'stars'
+  | 'forks'
+  | 'help-wanted-issues'
+  | 'updated'
+  | undefined
 
 export type GitHubSearchParams = {
   keyword: string
@@ -49,10 +56,12 @@ export type GitHubSearchContextProps = {
   setVisibility: (newVal: GitHubEnumVisibility) => void
   setArchived: (newVal: GitHubEnumArchived) => void
   setTotal: (newVal: number) => void
-} &GitHubSearchParams
+} & GitHubSearchParams
 
+export type GitHubDeleteRepoResponse =
+  Endpoints['DELETE /repos/{owner}/{repo}']['response']
 
-export type GitHubDeleteRepoResponse = Endpoints['DELETE /repos/{owner}/{repo}']['response']
-
-export type GitHubPatchRepoParams = Endpoints['PATCH /repos/{owner}/{repo}']['parameters']
-export type GitHubPatchResponse = Endpoints['PATCH /repos/{owner}/{repo}']['response']
+export type GitHubPatchRepoParams =
+  Endpoints['PATCH /repos/{owner}/{repo}']['parameters']
+export type GitHubPatchResponse =
+  Endpoints['PATCH /repos/{owner}/{repo}']['response']
