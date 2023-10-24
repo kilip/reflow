@@ -2,7 +2,7 @@
 
 import { PropsWithChildren, createContext, useContext, useReducer } from 'react';
 import { Toast, ToastAction, ToastActionType, ToastContextProps, ToastState, ToastType } from '../types';
-import ToastContainer from '../components/ToastContainer';
+import ToastContainer from '../views/ToastContainer';
 
 function toastReducer(state: ToastState, action: ToastAction){
   const { type, payload } = action

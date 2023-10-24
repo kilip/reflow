@@ -4,10 +4,10 @@ import { createContext, useContext, useReducer, useState } from 'react'
 import { ThemeAction, ThemeActionType, ThemeContextProps, ThemeState, ToastState } from '../types'
 import { PropsWithChildren } from 'react'
 import ToastProvider from './ToastContext'
-import Layout from '../components/Layout'
+import Layout from '../views/Layout'
 import AuthProvider from '@/pkg/auth/context/AuthContext'
 import ReactQueryProvider from './ReactQueryContext'
-import LoadingOverlay from '../components/LoadingOverlay'
+import LoadingOverlay from '../views/LoadingOverlay'
 
 function themeReducer(state: ThemeState, action: ThemeAction){
   const {type, payload} = action
@@ -31,9 +31,7 @@ export default function ThemeProvider({children}: PropsWithChildren) {
       loading,
       setLoading
     }}>
-      <Layout>
-        {children}
-      </Layout>
+      {children}
       <LoadingOverlay loading={loading}/>
     </ThemeContext.Provider>
   )

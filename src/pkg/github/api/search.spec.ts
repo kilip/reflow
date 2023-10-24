@@ -9,11 +9,16 @@ describe('search()', ()=>{
 
   it('should returns search', async () => {
     const query = {
-      q: 'reflow',
+      owner: 'user:kilip'
     } as GitHubSearchParams
     const { req } = createMocks({
       url: '/api/search',
-      body: query
+      body: query,
+      nextUrl: {
+        searchParams: new URLSearchParams({
+          owner: 'user:kilip'
+        })
+      }
     })
     req.json = vi.fn().mockResolvedValue(query)
     const resp = {
@@ -25,7 +30,9 @@ describe('search()', ()=>{
 
     fetchMock.mock({
       url: 'https://api.github.com/search/repositories',
-      query
+      query: {
+        q: 'user:kilip'
+      }
     }, {
       status: 200,
       body: resp
@@ -37,5 +44,4 @@ describe('search()', ()=>{
     expect(response).toBeInstanceOf(NextResponse)
     expect(json.data).toEqual(resp)
   })
-
 })
