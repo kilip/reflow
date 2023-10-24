@@ -35,7 +35,7 @@ jobs:
         run: pnpm coverage
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3.1.4
         with:
           files: ./coverage/clover.xml
           verbose: true
