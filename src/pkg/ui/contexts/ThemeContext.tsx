@@ -1,38 +1,40 @@
 'use client'
 
-import { createContext, useContext, useReducer, useState } from 'react'
-import { ThemeAction, ThemeActionType, ThemeContextProps, ThemeState, ToastState } from '../types'
+import { createContext, useContext, useState } from 'react'
+import {
+  ThemeAction,
+  ThemeActionType,
+  ThemeContextProps,
+  ThemeState,
+} from '../types'
 import { PropsWithChildren } from 'react'
-import ToastProvider from './ToastContext'
-import Layout from '../views/Layout'
-import AuthProvider from '@/pkg/auth/context/AuthContext'
-import ReactQueryProvider from './ReactQueryContext'
 import LoadingOverlay from '../views/LoadingOverlay'
 
-function themeReducer(state: ThemeState, action: ThemeAction){
-  const {type, payload} = action
+function themeReducer(state: ThemeState, action: ThemeAction) {
+  const { type, payload } = action
 
-  switch(type){
+  switch (type) {
     case ThemeActionType.Loading:
       return {
         ...state,
-        ...payload
+        ...payload,
       }
     default:
-      throw new Error('Unknown theme action type: '+type)
+      throw new Error('Unknown theme action type: ' + type)
   }
 }
 
-const ThemeContext = createContext<ThemeContextProps|undefined>(undefined)
-export default function ThemeProvider({children}: PropsWithChildren) {
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
+export default function ThemeProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false)
   return (
-    <ThemeContext.Provider value={{
-      loading,
-      setLoading
-    }}>
+    <ThemeContext.Provider
+      value={{
+        loading,
+        setLoading,
+      }}>
       {children}
-      <LoadingOverlay loading={loading}/>
+      <LoadingOverlay loading={loading} />
     </ThemeContext.Provider>
   )
 }
@@ -40,12 +42,9 @@ export default function ThemeProvider({children}: PropsWithChildren) {
 export function useThemeContext(): ThemeContextProps {
   const context = useContext(ThemeContext) as ThemeContextProps | undefined
 
-  if(!context){
-    throw Error(
-      'useThemeContext should be used within ThemeProvider'
-    )
+  if (!context) {
+    throw Error('useThemeContext should be used within ThemeProvider')
   }
 
   return context
 }
-
