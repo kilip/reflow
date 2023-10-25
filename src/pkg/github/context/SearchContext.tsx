@@ -16,7 +16,6 @@ import {
 } from '../types'
 import { GitHub } from '../GitHub'
 import { invalidContextUse } from '@/pkg/utils/error'
-import useSearchRepos from '../hooks/search'
 
 const GitHubSearchContext = createContext<GitHubSearchContextProps | undefined>(
   undefined
@@ -60,7 +59,6 @@ export function GitHubSearchProvider({ children }: PropsWithChildren) {
   const [archived, setArchived] = useState<GitHubEnumArchived>(
     defaults.archived
   )
-  const [total, setTotal] = useState<number>(0)
   const [params, setParams] = useState<GitHubSearchParams>(defaults)
 
   useEffect(() => {
@@ -91,7 +89,6 @@ export function GitHubSearchProvider({ children }: PropsWithChildren) {
         per_page,
         visibility,
         archived,
-        total,
         queryParams: params,
         setKeyword,
         setOwner,
@@ -101,7 +98,6 @@ export function GitHubSearchProvider({ children }: PropsWithChildren) {
         setPerPage,
         setVisibility,
         setArchived,
-        setTotal,
       }}>
       {children}
     </GitHubSearchContext.Provider>

@@ -2,7 +2,6 @@
 
 import { useGitHubSearchContext } from '../context/SearchContext'
 import Pagination from '@/pkg/ui/views/Pagination'
-import { useThemeContext } from '@/pkg/ui/contexts/ThemeContext'
 import { useState } from 'react'
 import { MdSearch } from 'react-icons/md'
 import {
