@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import {
   ThemeAction,
   ThemeActionType,
@@ -27,6 +27,7 @@ function themeReducer(state: ThemeState, action: ThemeAction) {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined)
 export default function ThemeProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(false)
+
   return (
     <ThemeContext.Provider
       value={{

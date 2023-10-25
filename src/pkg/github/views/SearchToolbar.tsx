@@ -5,14 +5,25 @@ import Pagination from '@/pkg/ui/views/Pagination'
 import { useThemeContext } from '@/pkg/ui/contexts/ThemeContext'
 import { useState } from 'react'
 import { MdSearch } from 'react-icons/md'
-import { GitHubEnumArchived, GitHubEnumSortOrder, GitHubEnumVisibility } from '../types'
+import {
+  GitHubEnumArchived,
+  GitHubEnumSortOrder,
+  GitHubEnumVisibility,
+} from '../types'
+import useSearchRepos from '../hooks/search'
 
-export default function SearchToolbar() {
+export default function SearchToolbar({
+  loading,
+  total,
+}: {
+  loading: boolean
+  total: number
+}) {
+  const { data: response } = useSearchRepos()
   const {
     setPage,
     page,
     per_page,
-    total,
     keyword,
     setKeyword,
     visibility,
@@ -22,10 +33,9 @@ export default function SearchToolbar() {
     sort,
     setSort,
     order,
-    setOrder
+    setOrder,
   } = useGitHubSearchContext()
 
-  const { loading } = useThemeContext()
   const [search, setSearch] = useState(keyword)
 
   const onPageChanged = (newPage: number) => {
@@ -38,146 +48,110 @@ export default function SearchToolbar() {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if(e.key == 'Enter'){
+    if (e.key == 'Enter') {
       handleSearch()
     }
   }
 
-  const handleChange = (key:string, newValue: string) => {
-    if(key==='visibility') setVisibility(newValue as GitHubEnumVisibility)
-    if(key==='archived') setArchived(newValue as GitHubEnumArchived)
-    if(key==='sort') setSort(newValue)
-    if(key==='order') setOrder(newValue as GitHubEnumSortOrder)
+  const handleChange = (key: string, newValue: string) => {
+    if (key === 'visibility') setVisibility(newValue as GitHubEnumVisibility)
+    if (key === 'archived') setArchived(newValue as GitHubEnumArchived)
+    if (key === 'sort') setSort(newValue)
+    if (key === 'order') setOrder(newValue as GitHubEnumSortOrder)
 
     setPage(1)
   }
 
   return (
-    <div className='flex flex-col bg-white p-2 rounded-lg drop-shadow-lg gap-2'>
+    <div className="flex flex-col bg-white p-2 rounded-lg drop-shadow-lg gap-2">
       {/* filters */}
-      <div className='flex gap-2'>
-
+      <div className="flex flex-wrap gap-2">
         {/* search */}
-        <div className='join'>
+        <div className="join">
           <input
             onChange={(e) => setSearch(e.target.value)}
-            type='text'
-            className='input input-bordered input-sm join-item focus:outline-none'
-            placeholder='type here to search'
-            accessKey='s'
+            type="text"
+            className="input input-bordered input-sm join-item focus:outline-none"
+            placeholder="type here to search"
+            accessKey="s"
             onKeyDown={(e) => handleKeyDown(e)}
           />
           <button
-            className='join-item btn btn-sm border-slate-400'
-            onClick={handleSearch}
-          >
-            <MdSearch/>
+            className="join-item btn btn-sm border-slate-400"
+            onClick={handleSearch}>
+            <MdSearch />
           </button>
         </div>
 
         {/* visibility */}
-        <div className='form-control w-full max-w-xs'>
+        <div className="form-control w-full max-w-xs">
           <select
-            id='visibility'
+            id="visibility"
             onChange={(e) => handleChange('visibility', e.target.value)}
             value={visibility}
-            className='select select-bordered select-sm focus:outline-none'
-          >
-            <option
-              value={GitHubEnumVisibility.undefined}
-            >
-              all
-            </option>
-            <option
-              value={GitHubEnumVisibility.public}
-            >
-              public
-            </option>
-            <option
-              value={GitHubEnumVisibility.private}
-            >
-              private
-            </option>
+            className="select select-bordered select-sm focus:outline-none">
+            <option value={GitHubEnumVisibility.undefined}>all</option>
+            <option value={GitHubEnumVisibility.public}>public</option>
+            <option value={GitHubEnumVisibility.private}>private</option>
           </select>
-          <label className='label' htmlFor='visibility'>
-            <span className='label-text-alt text-sm'>
+          <label className="label" htmlFor="visibility">
+            <span className="label-text-alt text-sm">
               filter repo visibility
             </span>
           </label>
         </div>
 
         {/* archived */}
-        <div className='form-control w-full max-w-xs'>
+        <div className="form-control w-full max-w-xs">
           <select
-            id='archived'
+            id="archived"
             onChange={(e) => handleChange('archived', e.target.value)}
             value={archived}
-            className='select select-bordered select-sm focus:outline-none'
-          >
-            <option
-              value={GitHubEnumArchived.undefined}
-            >
-              all
-            </option>
-            <option
-              value={GitHubEnumArchived.true}
-            >
-              archived
-            </option>
-            <option
-              value={GitHubEnumArchived.false}
-            >
-              unarchived
-            </option>
+            className="select select-bordered select-sm focus:outline-none">
+            <option value={GitHubEnumArchived.undefined}>all</option>
+            <option value={GitHubEnumArchived.true}>archived</option>
+            <option value={GitHubEnumArchived.false}>unarchived</option>
           </select>
-          <label className='label' htmlFor='archived'>
-            <span className='label-text-alt text-sm'>Filter archived/unarchived repo</span>
+          <label className="label" htmlFor="archived">
+            <span className="label-text-alt text-sm">
+              Filter archived/unarchived repo
+            </span>
           </label>
         </div>
 
         {/* sort */}
-        <div className='form-control w-full max-w-xs'>
+        <div className="form-control w-full max-w-xs">
           <select
-            id='sort'
+            id="sort"
             onChange={(e) => handleChange('sort', e.target.value)}
             value={sort}
-            className='select select-bordered select-sm focus:outline-none'
-          >
-            <option value='updated'>
-              updated
-            </option>
-            <option value='name'>
-              name
-            </option>
+            className="select select-bordered select-sm focus:outline-none">
+            <option value="updated">updated</option>
+            <option value="name">name</option>
           </select>
-          <label className='label' htmlFor='sort'>
-            <span className='label-text-alt text-sm'>sort repository</span>
+          <label className="label" htmlFor="sort">
+            <span className="label-text-alt text-sm">sort repository</span>
           </label>
         </div>
 
         {/* order */}
-        <div className='form-control w-full max-w-xs'>
+        <div className="form-control w-full max-w-xs">
           <select
-            id='order'
+            id="order"
             onChange={(e) => handleChange('order', e.target.value)}
             value={order}
-            className='select select-bordered select-sm focus:outline-none'
-          >
-            <option value={GitHubEnumSortOrder.asc}>
-              Ascending
-            </option>
-            <option value={GitHubEnumSortOrder.desc}>
-              Descending
-            </option>
+            className="select select-bordered select-sm focus:outline-none">
+            <option value={GitHubEnumSortOrder.asc}>Ascending</option>
+            <option value={GitHubEnumSortOrder.desc}>Descending</option>
           </select>
-          <label className='label' htmlFor='order'>
-            <span className='label-text-alt text-sm'>sort order</span>
+          <label className="label" htmlFor="order">
+            <span className="label-text-alt text-sm">sort order</span>
           </label>
         </div>
       </div>
 
       {/* navigation */}
-      <div className='flex'>
+      <div className="flex">
         <Pagination
           onPageChanged={onPageChanged}
           perPage={per_page}

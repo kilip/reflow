@@ -16,6 +16,7 @@ import {
 } from '../types'
 import { GitHub } from '../GitHub'
 import { invalidContextUse } from '@/pkg/utils/error'
+import useSearchRepos from '../hooks/search'
 
 const GitHubSearchContext = createContext<GitHubSearchContextProps | undefined>(
   undefined
