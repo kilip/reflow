@@ -45,7 +45,6 @@ export type GitHubSearchParams = {
 }
 
 export type GitHubSearchContextProps = {
-  total: number
   queryParams: GitHubSearchParams
   setKeyword: (newVal: string) => void
   setOwner: (newVal: string) => void
@@ -55,7 +54,6 @@ export type GitHubSearchContextProps = {
   setPage: (newVal: number) => void
   setVisibility: (newVal: GitHubEnumVisibility) => void
   setArchived: (newVal: GitHubEnumArchived) => void
-  setTotal: (newVal: number) => void
 } & GitHubSearchParams
 
 export type GitHubDeleteRepoResponse =
