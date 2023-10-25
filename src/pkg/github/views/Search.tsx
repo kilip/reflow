@@ -10,9 +10,13 @@ export default function Search() {
   const total = response ? response.data.total_count : 0
 
   return (
-    <div className="flex flex-col w-screen gap-4">
-      <SearchToolbar loading={isLoading} total={total} />
-      <RepoList loading={isLoading} repositories={repositories} />
+    <div className="flex flex-col w-screen items-center gap-4 relative">
+      <div className="flex w-full justify-center z-10 absolute">
+        <SearchToolbar total={total} loading={isLoading} />
+      </div>
+      <div className="flex mt-28">
+        <RepoList loading={isLoading} repositories={repositories} />
+      </div>
     </div>
   )
 }

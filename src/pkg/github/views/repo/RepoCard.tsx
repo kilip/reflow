@@ -87,11 +87,12 @@ export default function RepoCard({ repo }: Props) {
 
   return (
     <div
-      className="
-        relative flex flex-col bg-white drop-shadow-lg
-        rounded-md w-full lg:w-5/12 transition duration-300
-        min-h-[10rem]
-      ">
+      className={classNames({
+        'relative flex flex-col bg-white drop-shadow-lg': true,
+        'rounded-md w-full lg:w-5/12 transition duration-300': true,
+        'min-h-[10rem]': true,
+        'min-w-fit': true,
+      })}>
       {/* header */}
       <div className="flex p-2 items-center gap-2">
         <a

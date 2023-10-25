@@ -14,7 +14,7 @@ export default function RepoList({ repositories, loading }: Props) {
   }
 
   return (
-    <div className="flex flex-wrap gap-4 items-start justify-center">
+    <div className="flex flex-wrap gap-4 items-start justify-center w-full">
       {repositories.map((repo) => (
         <RepoCard key={repo.id} repo={repo} />
       ))}

@@ -2,14 +2,11 @@
 
 import { useGitHubSearchContext } from '../context/SearchContext'
 import Pagination from '@/pkg/ui/views/Pagination'
-import { useState } from 'react'
-import { MdSearch } from 'react-icons/md'
-import {
-  GitHubEnumArchived,
-  GitHubEnumSortOrder,
-  GitHubEnumVisibility,
-} from '../types'
-import useSearchRepos from '../hooks/search'
+import { useCallback, useState } from 'react'
+import { MdOutlineFilterAlt, MdSearch } from 'react-icons/md'
+import SearchFilters from './SearchFilters'
+import classNames from 'classnames'
+import useScreenType from '@/pkg/ui/hooks/screen'
 
 export default function SearchToolbar({
   loading,
@@ -18,24 +15,12 @@ export default function SearchToolbar({
   loading: boolean
   total: number
 }) {
-  const { data: response } = useSearchRepos()
-  const {
-    setPage,
-    page,
-    per_page,
-    keyword,
-    setKeyword,
-    visibility,
-    setVisibility,
-    archived,
-    setArchived,
-    sort,
-    setSort,
-    order,
-    setOrder,
-  } = useGitHubSearchContext()
+  const { setPage, page, per_page, keyword, setKeyword } =
+    useGitHubSearchContext()
 
   const [search, setSearch] = useState(keyword)
+  const [showFilter, setShowFilter] = useState(false)
+  const screenType = useScreenType()
 
   const onPageChanged = (newPage: number) => {
     setPage(newPage)
@@ -52,105 +37,49 @@ export default function SearchToolbar({
     }
   }
 
-  const handleChange = (key: string, newValue: string) => {
-    if (key === 'visibility') setVisibility(newValue as GitHubEnumVisibility)
-    if (key === 'archived') setArchived(newValue as GitHubEnumArchived)
-    if (key === 'sort') setSort(newValue)
-    if (key === 'order') setOrder(newValue as GitHubEnumSortOrder)
+  const handleShowFilter = useCallback(() => {
+    setShowFilter(!showFilter)
+  }, [showFilter, setShowFilter])
 
+  const handleReset = useCallback(() => {
+    setKeyword('')
+    setSearch('')
     setPage(1)
-  }
+  }, [setKeyword, setSearch, setPage])
+
+  const handleApplyFilter = useCallback(() => {
+    setKeyword(search)
+    setPage(1)
+  }, [setKeyword, search, setPage])
 
   return (
-    <div className="flex flex-col bg-white p-2 rounded-lg drop-shadow-lg gap-2">
-      {/* filters */}
-      <div className="flex flex-wrap gap-2">
-        {/* search */}
-        <div className="join">
-          <input
-            onChange={(e) => setSearch(e.target.value)}
-            type="text"
-            className="input input-bordered input-sm join-item focus:outline-none"
-            placeholder="type here to search"
-            accessKey="s"
-            onKeyDown={(e) => handleKeyDown(e)}
-          />
-          <button
-            className="join-item btn btn-sm border-slate-400"
-            onClick={handleSearch}>
-            <MdSearch />
-          </button>
-        </div>
-
-        {/* visibility */}
-        <div className="form-control w-full max-w-xs">
-          <select
-            id="visibility"
-            onChange={(e) => handleChange('visibility', e.target.value)}
-            value={visibility}
-            className="select select-bordered select-sm focus:outline-none">
-            <option value={GitHubEnumVisibility.undefined}>all</option>
-            <option value={GitHubEnumVisibility.public}>public</option>
-            <option value={GitHubEnumVisibility.private}>private</option>
-          </select>
-          <label className="label" htmlFor="visibility">
-            <span className="label-text-alt text-sm">
-              filter repo visibility
-            </span>
-          </label>
-        </div>
-
-        {/* archived */}
-        <div className="form-control w-full max-w-xs">
-          <select
-            id="archived"
-            onChange={(e) => handleChange('archived', e.target.value)}
-            value={archived}
-            className="select select-bordered select-sm focus:outline-none">
-            <option value={GitHubEnumArchived.undefined}>all</option>
-            <option value={GitHubEnumArchived.true}>archived</option>
-            <option value={GitHubEnumArchived.false}>unarchived</option>
-          </select>
-          <label className="label" htmlFor="archived">
-            <span className="label-text-alt text-sm">
-              Filter archived/unarchived repo
-            </span>
-          </label>
-        </div>
-
-        {/* sort */}
-        <div className="form-control w-full max-w-xs">
-          <select
-            id="sort"
-            onChange={(e) => handleChange('sort', e.target.value)}
-            value={sort}
-            className="select select-bordered select-sm focus:outline-none">
-            <option value="updated">updated</option>
-            <option value="name">name</option>
-          </select>
-          <label className="label" htmlFor="sort">
-            <span className="label-text-alt text-sm">sort repository</span>
-          </label>
-        </div>
-
-        {/* order */}
-        <div className="form-control w-full max-w-xs">
-          <select
-            id="order"
-            onChange={(e) => handleChange('order', e.target.value)}
-            value={order}
-            className="select select-bordered select-sm focus:outline-none">
-            <option value={GitHubEnumSortOrder.asc}>Ascending</option>
-            <option value={GitHubEnumSortOrder.desc}>Descending</option>
-          </select>
-          <label className="label" htmlFor="order">
-            <span className="label-text-alt text-sm">sort order</span>
-          </label>
-        </div>
+    <div
+      className={classNames({
+        'flex flex-col bg-white rounded-lg drop-shadow-lg': true,
+        'p-2 gap-2 w-full lg:w-3/4': true,
+        'duration-300': true,
+      })}>
+      {/* search */}
+      <div className="join w-full">
+        <input
+          name="keyword"
+          onChange={(e) => setSearch(e.target.value)}
+          type="text"
+          className="input input-bordered input-sm join-item focus:outline-none w-full"
+          placeholder="type here to search"
+          accessKey="s"
+          onKeyDown={(e) => handleKeyDown(e)}
+          value={search}
+        />
+        <button
+          className="join-item btn btn-sm border-slate-400"
+          onClick={handleSearch}>
+          <MdSearch />
+        </button>
       </div>
 
       {/* navigation */}
-      <div className="flex">
+      <div className="flex gap-2">
         <Pagination
           onPageChanged={onPageChanged}
           perPage={per_page}
@@ -158,6 +87,27 @@ export default function SearchToolbar({
           currentPage={page}
           loading={loading}
         />
+        <button
+          className="join-item btn btn-sm border-slate-400"
+          onClick={() => handleShowFilter()}>
+          <MdOutlineFilterAlt className="w-4 h-4" />
+          <span
+            className={classNames({
+              hidden: screenType.isMedium || screenType.isSmall,
+            })}>
+            Filters
+          </span>
+        </button>
+      </div>
+
+      {/* filters */}
+      <div
+        className={classNames({
+          hidden: !showFilter,
+          'max-w-full duration-1000': true,
+        })}
+        onMouseLeave={() => handleShowFilter()}>
+        <SearchFilters onReset={handleReset} onApply={handleApplyFilter} />
       </div>
     </div>
   )
