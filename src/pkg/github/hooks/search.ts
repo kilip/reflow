@@ -3,11 +3,9 @@ import { useGitHubSearchContext } from '../context/SearchContext'
 import { GitHubSearchResponse } from '../types'
 import { GitHub } from '../GitHub'
 import { api } from '@/pkg/utils/fetch'
-import { useThemeContext } from '@/pkg/ui/contexts/ThemeContext'
 
 export default function useSearchRepos() {
   const { queryParams: params } = useGitHubSearchContext()
-  const { setLoading } = useThemeContext()
 
   const result = useQuery({
     queryKey: [GitHub.search.queryKey, { params }],
